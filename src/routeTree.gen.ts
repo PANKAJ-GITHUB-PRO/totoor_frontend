@@ -9,8 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as FeedRouteImport } from './routes/feed'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BidsRouteImport } from './routes/bids'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TuddorsIdRouteImport } from './routes/tuddors/$id'
+import { Route as RequirementsIdRouteImport } from './routes/requirements/$id'
 import { Route as OnboardingTuddorRouteImport } from './routes/onboarding/tuddor'
 import { Route as OnboardingStudentRouteImport } from './routes/onboarding/student'
 import { Route as AuthRoleRouteImport } from './routes/auth/role'
@@ -18,14 +26,54 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthOtpRouteImport } from './routes/auth/otp'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedRoute = FeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BidsRoute = BidsRouteImport.update({
+  id: '/bids',
+  path: '/bids',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TuddorsIdRoute = TuddorsIdRouteImport.update({
+  id: '/tuddors/$id',
+  path: '/tuddors/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequirementsIdRoute = RequirementsIdRouteImport.update({
+  id: '/requirements/$id',
+  path: '/requirements/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingTuddorRoute = OnboardingTuddorRouteImport.update({
@@ -61,81 +109,172 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bids': typeof BidsRoute
   '/dashboard': typeof DashboardRoute
+  '/feed': typeof FeedRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
   '/onboarding/tuddor': typeof OnboardingTuddorRoute
+  '/requirements/$id': typeof RequirementsIdRoute
+  '/tuddors/$id': typeof TuddorsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bids': typeof BidsRoute
   '/dashboard': typeof DashboardRoute
+  '/feed': typeof FeedRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
   '/onboarding/tuddor': typeof OnboardingTuddorRoute
+  '/requirements/$id': typeof RequirementsIdRoute
+  '/tuddors/$id': typeof TuddorsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bids': typeof BidsRoute
   '/dashboard': typeof DashboardRoute
+  '/feed': typeof FeedRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
   '/onboarding/tuddor': typeof OnboardingTuddorRoute
+  '/requirements/$id': typeof RequirementsIdRoute
+  '/tuddors/$id': typeof TuddorsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/bids'
     | '/dashboard'
+    | '/feed'
+    | '/notifications'
+    | '/profile'
+    | '/search'
+    | '/settings'
     | '/auth/login'
     | '/auth/otp'
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
     | '/onboarding/tuddor'
+    | '/requirements/$id'
+    | '/tuddors/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/bids'
     | '/dashboard'
+    | '/feed'
+    | '/notifications'
+    | '/profile'
+    | '/search'
+    | '/settings'
     | '/auth/login'
     | '/auth/otp'
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
     | '/onboarding/tuddor'
+    | '/requirements/$id'
+    | '/tuddors/$id'
   id:
     | '__root__'
     | '/'
+    | '/bids'
     | '/dashboard'
+    | '/feed'
+    | '/notifications'
+    | '/profile'
+    | '/search'
+    | '/settings'
     | '/auth/login'
     | '/auth/otp'
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
     | '/onboarding/tuddor'
+    | '/requirements/$id'
+    | '/tuddors/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BidsRoute: typeof BidsRoute
   DashboardRoute: typeof DashboardRoute
+  FeedRoute: typeof FeedRoute
+  NotificationsRoute: typeof NotificationsRoute
+  ProfileRoute: typeof ProfileRoute
+  SearchRoute: typeof SearchRoute
+  SettingsRoute: typeof SettingsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthOtpRoute: typeof AuthOtpRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthRoleRoute: typeof AuthRoleRoute
   OnboardingStudentRoute: typeof OnboardingStudentRoute
   OnboardingTuddorRoute: typeof OnboardingTuddorRoute
+  RequirementsIdRoute: typeof RequirementsIdRoute
+  TuddorsIdRoute: typeof TuddorsIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feed': {
+      id: '/feed'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -143,11 +282,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bids': {
+      id: '/bids'
+      path: '/bids'
+      fullPath: '/bids'
+      preLoaderRoute: typeof BidsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tuddors/$id': {
+      id: '/tuddors/$id'
+      path: '/tuddors/$id'
+      fullPath: '/tuddors/$id'
+      preLoaderRoute: typeof TuddorsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/requirements/$id': {
+      id: '/requirements/$id'
+      path: '/requirements/$id'
+      fullPath: '/requirements/$id'
+      preLoaderRoute: typeof RequirementsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/tuddor': {
@@ -197,13 +357,21 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BidsRoute: BidsRoute,
   DashboardRoute: DashboardRoute,
+  FeedRoute: FeedRoute,
+  NotificationsRoute: NotificationsRoute,
+  ProfileRoute: ProfileRoute,
+  SearchRoute: SearchRoute,
+  SettingsRoute: SettingsRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthOtpRoute: AuthOtpRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthRoleRoute: AuthRoleRoute,
   OnboardingStudentRoute: OnboardingStudentRoute,
   OnboardingTuddorRoute: OnboardingTuddorRoute,
+  RequirementsIdRoute: RequirementsIdRoute,
+  TuddorsIdRoute: TuddorsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
