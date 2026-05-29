@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingStudentRouteImport } from './routes/onboarding/student'
 import { Route as AuthRoleRouteImport } from './routes/auth/role'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthOtpRouteImport } from './routes/auth/otp'
@@ -18,6 +19,11 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingStudentRoute = OnboardingStudentRouteImport.update({
+  id: '/onboarding/student',
+  path: '/onboarding/student',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoleRoute = AuthRoleRouteImport.update({
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
+  '/onboarding/student': typeof OnboardingStudentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
+  '/onboarding/student': typeof OnboardingStudentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,12 +70,25 @@ export interface FileRoutesById {
   '/auth/otp': typeof AuthOtpRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
+  '/onboarding/student': typeof OnboardingStudentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/auth/otp' | '/auth/register' | '/auth/role'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/auth/otp'
+    | '/auth/register'
+    | '/auth/role'
+    | '/onboarding/student'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/auth/otp' | '/auth/register' | '/auth/role'
+  to:
+    | '/'
+    | '/auth/login'
+    | '/auth/otp'
+    | '/auth/register'
+    | '/auth/role'
+    | '/onboarding/student'
   id:
     | '__root__'
     | '/'
@@ -75,6 +96,7 @@ export interface FileRouteTypes {
     | '/auth/otp'
     | '/auth/register'
     | '/auth/role'
+    | '/onboarding/student'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -83,6 +105,7 @@ export interface RootRouteChildren {
   AuthOtpRoute: typeof AuthOtpRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthRoleRoute: typeof AuthRoleRoute
+  OnboardingStudentRoute: typeof OnboardingStudentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/student': {
+      id: '/onboarding/student'
+      path: '/onboarding/student'
+      fullPath: '/onboarding/student'
+      preLoaderRoute: typeof OnboardingStudentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/role': {
@@ -131,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthOtpRoute: AuthOtpRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthRoleRoute: AuthRoleRoute,
+  OnboardingStudentRoute: OnboardingStudentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
