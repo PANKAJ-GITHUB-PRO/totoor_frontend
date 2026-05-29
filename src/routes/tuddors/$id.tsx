@@ -7,11 +7,12 @@ import { PillButton } from "@/components/ui-kit/PillButton";
 import { ContactUnlock } from "@/components/ui-kit/ContactUnlock";
 import { TUDDORS } from "@/lib/mock-data";
 
+import type { Tuddor } from "@/lib/types";
 export const Route = createFileRoute("/tuddors/$id")({
   component: TuddorProfile,
   notFoundComponent: () => <div className="p-8 text-center">Tuddor not found</div>,
   errorComponent: ({ error }) => <div className="p-8 text-center text-sm">{error.message}</div>,
-  loader: ({ params }) => {
+  loader: ({ params }): Tuddor => {
     const t = TUDDORS.find((x) => x.id === params.id);
     if (!t) throw notFound();
     return t;
