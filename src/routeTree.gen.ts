@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingTuddorRouteImport } from './routes/onboarding/tuddor'
 import { Route as OnboardingStudentRouteImport } from './routes/onboarding/student'
 import { Route as AuthRoleRouteImport } from './routes/auth/role'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
@@ -19,6 +20,11 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingTuddorRoute = OnboardingTuddorRouteImport.update({
+  id: '/onboarding/tuddor',
+  path: '/onboarding/tuddor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingStudentRoute = OnboardingStudentRouteImport.update({
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
+  '/onboarding/tuddor': typeof OnboardingTuddorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
+  '/onboarding/tuddor': typeof OnboardingTuddorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/role': typeof AuthRoleRoute
   '/onboarding/student': typeof OnboardingStudentRoute
+  '/onboarding/tuddor': typeof OnboardingTuddorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
+    | '/onboarding/tuddor'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
+    | '/onboarding/tuddor'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/role'
     | '/onboarding/student'
+    | '/onboarding/tuddor'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthRoleRoute: typeof AuthRoleRoute
   OnboardingStudentRoute: typeof OnboardingStudentRoute
+  OnboardingTuddorRoute: typeof OnboardingTuddorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/tuddor': {
+      id: '/onboarding/tuddor'
+      path: '/onboarding/tuddor'
+      fullPath: '/onboarding/tuddor'
+      preLoaderRoute: typeof OnboardingTuddorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/student': {
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRegisterRoute: AuthRegisterRoute,
   AuthRoleRoute: AuthRoleRoute,
   OnboardingStudentRoute: OnboardingStudentRoute,
+  OnboardingTuddorRoute: OnboardingTuddorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
