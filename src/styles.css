@@ -1,3 +1,4 @@
+@import url("https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -9,14 +10,6 @@
  * Typography: General Sans (loaded via @font-face from CDN)
  * 4/8pt spacing, soft floating elevation, pill buttons
  */
-
-@font-face {
-  font-family: "General Sans";
-  src: url("https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap");
-  font-display: swap;
-}
-
-@import url("https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap");
 
 @theme inline {
   --font-sans: "General Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
