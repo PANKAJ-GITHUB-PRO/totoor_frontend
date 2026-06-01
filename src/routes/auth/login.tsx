@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { PillButton } from "@/components/ui-kit/PillButton";
 import { Field, Input } from "@/components/ui-kit/Field";
+import { Logo } from "@/components/ui-kit/Logo";
 import { stashPostAuthRedirect, validateAuthRedirectSearch } from "@/lib/authRedirect";
 import { useSession } from "@/lib/session";
 
@@ -38,12 +39,7 @@ function Login() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="mx-auto w-full max-w-screen-sm px-5 pt-8 pb-12 flex-1 flex flex-col">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient text-white font-bold shadow-glow">
-            T
-          </span>
-          <span className="font-semibold">Tudoor</span>
-        </Link>
+        <Logo size="md" to="/" />
 
         <div className="mt-10">
           <h1 className="text-3xl font-bold tracking-tight">{redirect === "/search" ? "Log in to browse tutors" : "Welcome back"}</h1>

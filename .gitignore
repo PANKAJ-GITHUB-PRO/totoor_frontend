@@ -16,8 +16,19 @@ dist-ssr
 .nitro
 *.local
 
-# Capacitor native projects (generated; run cap sync after clone)
-# Keep android/ in git if you want CI to build APKs — uncomment to ignore:
+# Capacitor — ignore native build cache (APK for website lives in public/downloads/)
+android/**/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/captures/
+*.keystore
+*.jks
+
+# Website download APK — commit this file for Vercel (do not ignore):
+# public/downloads/tudoor.apk
+
+# Optional: ignore whole native projects (then run cap add android after clone)
 # android/
 # ios/
 
