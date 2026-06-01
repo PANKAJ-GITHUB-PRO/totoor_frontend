@@ -6,7 +6,7 @@ import { Capacitor } from "@capacitor/core";
 
 import { getRouter } from "./router";
 import "./styles.css";
-//not working
+//not working here need to fix it 
 if (Capacitor.isNativePlatform()) {
   void import("@capacitor/status-bar").then(({ StatusBar, Style }) => {
     void StatusBar.setStyle({ style: Style.Light });
