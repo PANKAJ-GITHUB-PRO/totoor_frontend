@@ -16,6 +16,11 @@ dist-ssr
 .nitro
 *.local
 
+# Capacitor native projects (generated; run cap sync after clone)
+# Keep android/ in git if you want CI to build APKs — uncomment to ignore:
+# android/
+# ios/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

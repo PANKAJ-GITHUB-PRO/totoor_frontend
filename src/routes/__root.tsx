@@ -8,8 +8,9 @@ import {
 import { useEffect } from "react";
 
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { InstallPrompt } from "../components/pwa/InstallPrompt";
 
-`function NotFoundComponent() {
+function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -74,16 +75,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Tuddor Connect is an educational marketplace and social platform connecting students with Tuddors." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Tuddor Connect is an educational marketplace and social platform connecting students with Tuddors." },
+      { title: "Tudoor" },
+      { name: "description", content: "Tudoor Connect is an educational marketplace and social platform connecting students with tutors." },
+      { name: "author", content: "Tudoor" },
+      { property: "og:title", content: "Tudoor" },
+      { property: "og:description", content: "Tudoor Connect is an educational marketplace and social platform connecting students with tutors." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Tuddor Connect is an educational marketplace and social platform connecting students with Tuddors." },
+      { name: "twitter:site", content: "@Tudoor" },
+      { name: "twitter:title", content: "Tudoor" },
+      { name: "twitter:description", content: "Tudoor Connect is an educational marketplace and social platform connecting students with tutors." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5a09496d-c946-4fc6-974c-b5b1ba49de14/id-preview-f05a02fa--95975dd0-2f0f-4d91-9680-9cc3cbc930f2.lovable.app-1780075563453.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5a09496d-c946-4fc6-974c-b5b1ba49de14/id-preview-f05a02fa--95975dd0-2f0f-4d91-9680-9cc3cbc930f2.lovable.app-1780075563453.png" },
     ],
@@ -98,8 +99,8 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <InstallPrompt />
     </QueryClientProvider>
   );
 }

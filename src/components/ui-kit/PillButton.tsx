@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Spinner } from "./Spinner";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "soft";
 type Size = "sm" | "md" | "lg";
@@ -36,7 +37,7 @@ export function PillButton({
       className={`inline-flex items-center justify-center gap-2 rounded-full font-medium transition disabled:opacity-50 disabled:pointer-events-none ${variants[variant]} ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`}
       {...rest}
     >
-      {loading ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : leftIcon}
+      {loading ? <Spinner /> : leftIcon}
       {children}
       {!loading && rightIcon}
     </button>

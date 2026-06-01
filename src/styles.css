@@ -5,7 +5,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Tuddor Design System
+/* Tudoor Design System
  * Brand: #5B5FEF Indigo, #2DD4BF Aqua Mint, #0B1120 Rich Midnight
  * Typography: General Sans (loaded via @font-face from CDN)
  * 4/8pt spacing, soft floating elevation, pill buttons
@@ -118,7 +118,11 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar { display: none; }
   html, body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   body {
     background-color: var(--color-background);

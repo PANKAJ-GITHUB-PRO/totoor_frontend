@@ -1,0 +1,213 @@
+import { Heart, MessageCircle, MapPin, Send, Wallet, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import type { FeedPost } from "@/lib/types";
+import { api } from "@/lib/api";
+import { useSession } from "@/lib/session";
+import { Card, Tag } from "./Card";
+
+export function PostCard({ post, onChange }: { post: FeedPost; onChange?: (post: FeedPost) => void }) {
+  const [commenting, setCommenting] = useState(false);
+  const [localPost, setLocalPost] = useState(post);
+  const [comment, setComment] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
+  const { role } = useSession();
+  const activePost = localPost.id === post.id ? localPost : post;
+  const isReq = activePost.kind === "requirement";
+  const isAnnouncement = activePost.kind === "announcement";
+  const canBid = role === "tutor" && isReq && activePost.authorRole === "student" && (activePost.status ?? "active") === "active";
+  const canConnect = role === "student" && isAnnouncement && activePost.authorRole === "tutor";
+
+  useEffect(() => {
+    setLocalPost(post);
+  }, [post]);
+
+  const like = async () => {
+    setBusy(true);
+    try {
+      const updated = await api.likePost(activePost.id);
+      setLocalPost(updated);
+      onChange?.(updated);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const connect = async () => {
+    if (requestSent || busy) return;
+    setBusy(true);
+    try {
+      await api.createRequest(activePost.authorId);
+      setRequestSent(true);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const submitComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim()) return;
+    setBusy(true);
+    try {
+      const updated = await api.commentPost(activePost.id, comment.trim());
+      setLocalPost(updated);
+      onChange?.(updated);
+      setComment("");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (isReq) {
+    return (
+      <Card className="overflow-hidden p-3">
+        <div className="flex items-center gap-2">
+          <Link to="/profiles/$id" params={{ id: activePost.authorId }} className="shrink-0">
+            <img src={activePost.authorAvatar} alt="" className="h-8 w-8 rounded-full object-cover" />
+          </Link>
+          <div className="min-w-0 flex-1">
+            <div className="flex min-w-0 items-center gap-1.5 text-xs">
+              <Link to="/profiles/$id" params={{ id: activePost.authorId }} className="truncate font-semibold hover:text-primary">{activePost.authorName}</Link>
+              <span className="shrink-0 text-muted-foreground">· Student · {activePost.createdAt}</span>
+            </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-1">
+            <Tag tone="warning">Req</Tag>
+            <Tag tone={activePost.status === "completed" ? "success" : activePost.status === "expired" ? "warning" : "muted"}>{activePost.status ?? "active"}</Tag>
+          </div>
+        </div>
+
+        <Link to="/requirements/$id" params={{ id: activePost.id }} className="mt-2 block truncate text-sm font-semibold hover:text-primary">
+          {activePost.title}
+        </Link>
+        <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{activePost.body}</p>
+
+        <div className="mt-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-[11px] text-muted-foreground">
+          {activePost.tags.slice(0, 3).map((t) => (
+            <span key={t} className="shrink-0 rounded-full bg-secondary px-2 py-0.5">#{t}</span>
+          ))}
+          {activePost.city && (
+            <span className="inline-flex shrink-0 items-center gap-0.5"><MapPin className="h-3 w-3" />{activePost.city}</span>
+          )}
+          {activePost.budget && (
+            <span className="inline-flex shrink-0 items-center gap-0.5"><Wallet className="h-3 w-3" />{activePost.budget}</span>
+          )}
+          {typeof activePost.highestBid === "number" && (
+            <span className="shrink-0">Top Rs {activePost.highestBid}/hr</span>
+          )}
+          <span className="inline-flex shrink-0 items-center gap-0.5"><Send className="h-3 w-3" />{activePost.bidCount ?? 0} bids</span>
+          {canBid && (
+            <Link to="/requirements/$id" params={{ id: activePost.id }} className="ml-auto shrink-0 rounded-full bg-primary px-2.5 py-1 text-[10px] font-medium text-primary-foreground">
+              Place Bid
+            </Link>
+          )}
+        </div>
+
+        <div className="mt-2 flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
+          <button disabled={busy} onClick={like} className="inline-flex h-8 items-center gap-1 rounded-full bg-surface px-2.5 hover:text-foreground disabled:opacity-60">
+            <Heart className="h-3.5 w-3.5" />{activePost.likes}
+          </button>
+          <button onClick={() => setCommenting(true)} className="inline-flex h-8 items-center gap-1 rounded-full bg-surface px-2.5 hover:text-foreground">
+            <MessageCircle className="h-3.5 w-3.5" />{activePost.comments}
+          </button>
+        </div>
+
+        {commenting && <CommentSheet post={activePost} comment={comment} setComment={setComment} busy={busy} onClose={() => setCommenting(false)} onSubmit={submitComment} />}
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="overflow-hidden p-4">
+      <div className="flex items-start gap-3">
+        <Link to="/profiles/$id" params={{ id: activePost.authorId }} className="shrink-0">
+          <img src={activePost.authorAvatar} alt={activePost.authorName} className="h-10 w-10 rounded-full object-cover" />
+        </Link>
+        <div className="min-w-0 flex-1">
+          <Link to="/profiles/$id" params={{ id: activePost.authorId }} className="block truncate text-sm font-semibold hover:text-primary">{activePost.authorName}</Link>
+          <p className="truncate text-xs text-muted-foreground">
+            {activePost.authorRole === "tutor" ? "Tutor" : "Student"} - {activePost.createdAt}
+          </p>
+        </div>
+        <Tag tone={isAnnouncement ? "primary" : "accent"}>{isAnnouncement ? "Announcement" : "General"}</Tag>
+      </div>
+      <h3 className="mt-3 break-words text-base font-semibold leading-snug">{activePost.title}</h3>
+      <p className="mt-1 whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground">{activePost.body}</p>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {activePost.tags.map((t) => <Tag key={t} tone="muted"><span className="max-w-36 truncate">#{t}</span></Tag>)}
+      </div>
+      {activePost.city && (
+        <div className="mt-3 text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3 shrink-0" /><span className="truncate">{activePost.city}</span></span>
+        </div>
+      )}
+      {canConnect && (
+        <div className="mt-3 flex justify-end">
+          <button type="button" disabled={busy || requestSent} onClick={connect} className="rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-60">
+            {requestSent ? "Request sent" : busy ? "Sending..." : "Connect"}
+          </button>
+        </div>
+      )}
+      <div className="mt-3 flex items-center justify-start border-t border-border pt-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <button disabled={busy} onClick={like} className="inline-flex h-9 min-w-16 items-center justify-center gap-1.5 rounded-full bg-surface px-3 hover:text-foreground disabled:opacity-60">
+            <Heart className="h-4 w-4 shrink-0" />{activePost.likes}
+          </button>
+          <button onClick={() => setCommenting(true)} className="inline-flex h-9 min-w-16 items-center justify-center gap-1.5 rounded-full bg-surface px-3 hover:text-foreground">
+            <MessageCircle className="h-4 w-4 shrink-0" />{activePost.comments}
+          </button>
+        </div>
+      </div>
+      {commenting && <CommentSheet post={activePost} comment={comment} setComment={setComment} busy={busy} onClose={() => setCommenting(false)} onSubmit={submitComment} />}
+    </Card>
+  );
+}
+
+function CommentSheet({
+  post,
+  comment,
+  setComment,
+  busy,
+  onClose,
+  onSubmit,
+}: {
+  post: FeedPost;
+  comment: string;
+  setComment: (v: string) => void;
+  busy: boolean;
+  onClose: () => void;
+  onSubmit: (e: React.FormEvent) => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end bg-foreground/30" onClick={onClose}>
+      <div className="flex max-h-[88vh] w-full flex-col rounded-t-3xl bg-background p-5 shadow-floating sm:mx-auto sm:max-w-screen-sm sm:rounded-3xl" onClick={(event) => event.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-semibold">Comments</h3>
+            <p className="truncate text-xs text-muted-foreground">{post.title}</p>
+          </div>
+          <button type="button" onClick={onClose} className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border bg-card"><X className="h-5 w-5" /></button>
+        </div>
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+          {(post.commentItems ?? []).map((item) => (
+            <div key={item.id} className="flex gap-3">
+              <Link to="/profiles/$id" params={{ id: item.authorId }} className="shrink-0">
+                <img src={item.authorAvatar} alt="" className="h-9 w-9 rounded-full object-cover" />
+              </Link>
+              <div className="min-w-0 flex-1 rounded-2xl bg-surface px-3 py-2">
+                <Link to="/profiles/$id" params={{ id: item.authorId }} className="block truncate text-sm font-semibold hover:text-primary">{item.authorName}</Link>
+                <p className="break-words text-sm text-muted-foreground">{item.body}</p>
+              </div>
+            </div>
+          ))}
+          {!post.commentItems?.length && <p className="py-8 text-center text-sm text-muted-foreground">No comments yet.</p>}
+        </div>
+        <form onSubmit={onSubmit} className="mt-4 flex gap-2 border-t border-border pt-4">
+          <input value={comment} onChange={(e) => setComment(e.target.value)} className="h-11 min-w-0 flex-1 rounded-xl border border-input bg-card px-3 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/15" placeholder="Add a comment" />
+          <button disabled={busy} className="shrink-0 rounded-xl bg-primary px-4 text-xs font-medium text-primary-foreground disabled:opacity-60">Post</button>
+        </form>
+      </div>
+    </div>
+  );
+}

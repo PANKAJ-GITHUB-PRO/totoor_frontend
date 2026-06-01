@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { GraduationCap, BookOpenCheck, ArrowRight, Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PillButton } from "@/components/ui-kit/PillButton";
 import { Card } from "@/components/ui-kit/Card";
 import { useSession } from "@/lib/session";
@@ -10,25 +10,35 @@ export const Route = createFileRoute("/auth/role")({ component: RoleSelect });
 
 function RoleSelect() {
   const [role, setRole] = useState<Role | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setRole: save } = useSession();
+  const { onboarded, setRole: save } = useSession();
 
-  const submit = () => {
-    if (!role) return;
-    save(role);
-    navigate({ to: role === "student" ? "/onboarding/student" : "/onboarding/tuddor" });
+  useEffect(() => {
+    if (onboarded) navigate({ to: "/dashboard" });
+  }, [navigate, onboarded]);
+
+  const submit = async () => {
+    if (!role || loading) return;
+    setLoading(true);
+    try {
+      await save(role);
+      navigate({ to: role === "student" ? "/onboarding/student" : "/onboarding/tutor" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <div className="mx-auto w-full max-w-screen-sm px-5 pt-8 pb-12 flex-1 flex flex-col">
         <h1 className="text-3xl font-bold tracking-tight">I'm joining as a…</h1>
-        <p className="mt-1 text-sm text-muted-foreground">You can switch roles later from settings.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Choose the experience you want to use now.</p>
 
         <div className="mt-8 grid gap-3">
           {[
-            { id: "student" as const, icon: GraduationCap, title: "Student", desc: "Find Tuddors, post learning requirements, and book sessions." },
-            { id: "tuddor" as const, icon: BookOpenCheck, title: "Tuddor", desc: "Teach online or in-person, build your profile, accept students." },
+            { id: "student" as const, icon: GraduationCap, title: "Student", desc: "Find tutors, post learning requirements, and book sessions." },
+            { id: "tutor" as const, icon: BookOpenCheck, title: "Tutor", desc: "Teach online or in-person, build your profile, accept students." },
           ].map(({ id, icon: Icon, title, desc }) => {
             const active = role === id;
             return (
@@ -50,7 +60,7 @@ function RoleSelect() {
           })}
         </div>
 
-        <PillButton size="lg" fullWidth className="mt-8" onClick={submit} disabled={!role} rightIcon={<ArrowRight className="h-4 w-4" />}>Continue</PillButton>
+        <PillButton size="lg" fullWidth className="mt-8" onClick={submit} loading={loading} disabled={!role || loading} rightIcon={<ArrowRight className="h-4 w-4" />}>Continue</PillButton>
       </div>
     </div>
   );

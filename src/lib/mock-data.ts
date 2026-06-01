@@ -1,4 +1,4 @@
-import type { Tuddor, Student, FeedPost, Bid, NotificationItem } from "./types";
+import type { Tutor, Student, FeedPost, Bid } from "./types";
 
 export const SUBJECTS = [
   "Mathematics", "Physics", "Chemistry", "Biology", "English",
@@ -7,7 +7,7 @@ export const SUBJECTS = [
 
 export const CITIES = ["Bangalore", "Mumbai", "Delhi", "Hyderabad", "Pune", "Chennai"];
 
-export const TUDDORS: Tuddor[] = [
+export const TUTORS: Tutor[] = [
   {
     id: "t1",
     name: "Maya Sharma",
@@ -81,7 +81,7 @@ export const STUDENTS: Student[] = [
 export const FEED: FeedPost[] = [
   {
     id: "p1", kind: "announcement", authorId: "t1", authorName: "Maya Sharma",
-    authorAvatar: "https://i.pravatar.cc/200?img=47", authorRole: "tuddor",
+    authorAvatar: "https://i.pravatar.cc/200?img=47", authorRole: "tutor",
     title: "Weekend JEE crash batch starting Dec 1",
     body: "Live online intensive: 12 sessions covering calculus + coordinate geometry. Limited to 15 seats.",
     tags: ["JEE", "Mathematics", "Online"],
@@ -91,7 +91,7 @@ export const FEED: FeedPost[] = [
   {
     id: "p2", kind: "requirement", authorId: "s1", authorName: "Ananya Roy",
     authorAvatar: "https://i.pravatar.cc/200?img=5", authorRole: "student",
-    title: "Need a Chemistry Tuddor for class 12 boards",
+    title: "Need a Chemistry tutor for class 12 boards",
     body: "Looking for 3 sessions/week, organic chemistry focus. Preferably home tuition near Koramangala.",
     tags: ["Chemistry", "Class 12", "Home"],
     budget: "₹600–₹900/hr", mode: "home", city: "Bangalore",
@@ -99,7 +99,7 @@ export const FEED: FeedPost[] = [
   },
   {
     id: "p3", kind: "announcement", authorId: "t3", authorName: "Neha Iyer",
-    authorAvatar: "https://i.pravatar.cc/200?img=32", authorRole: "tuddor",
+    authorAvatar: "https://i.pravatar.cc/200?img=32", authorRole: "tutor",
     title: "Free IELTS speaking workshop this Saturday",
     body: "Join a 90-min live session with mock interviews and personalised feedback.",
     tags: ["IELTS", "English", "Free"],
@@ -110,22 +110,16 @@ export const FEED: FeedPost[] = [
 
 export const BIDS: Bid[] = [
   {
-    id: "b1", requirementId: "p2", tuddorId: "t2", tuddorName: "Arjun Verma",
-    tuddorAvatar: "https://i.pravatar.cc/200?img=12",
+    id: "b1", requirementId: "p2", tutorId: "t2", tutorName: "Arjun Verma",
+    tutorAvatar: "https://i.pravatar.cc/200?img=12",
     price: 750, note: "I can do 3 sessions/week, organic-first approach.",
     status: "pending", createdAt: "1h",
   },
   {
-    id: "b2", requirementId: "p2", tuddorId: "t1", tuddorName: "Maya Sharma",
-    tuddorAvatar: "https://i.pravatar.cc/200?img=47",
+    id: "b2", requirementId: "p2", tutorId: "t1", tutorName: "Maya Sharma",
+    tutorAvatar: "https://i.pravatar.cc/200?img=47",
     price: 800, note: "Available Mon/Wed/Fri evenings. First class free.",
     status: "accepted", createdAt: "3h",
   },
 ];
 
-export const NOTIFICATIONS: NotificationItem[] = [
-  { id: "n1", title: "New review on your profile", body: "“Maya explains complex topics so clearly.”", time: "2m", unread: true, kind: "system" },
-  { id: "n2", title: "Calculus session in 30 minutes", body: "with Arjun · Zoom link ready", time: "30m", unread: true, kind: "message" },
-  { id: "n3", title: "Bid accepted", body: "Ananya accepted your bid on Chemistry requirement.", time: "1h", unread: false, kind: "bid" },
-  { id: "n4", title: "Monthly payout processed", body: "₹1,248 deposited to your account.", time: "1h", unread: false, kind: "system" },
-];

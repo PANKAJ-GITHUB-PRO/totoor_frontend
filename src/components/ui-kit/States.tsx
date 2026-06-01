@@ -22,17 +22,14 @@ export function EmptyState({
   );
 }
 
-export function SkeletonCard() {
-  return (
-    <div className="animate-pulse rounded-2xl border border-border bg-card p-4">
-      <div className="flex gap-3">
-        <div className="h-14 w-14 rounded-2xl bg-secondary" />
-        <div className="flex-1 space-y-2">
-          <div className="h-3 w-2/3 rounded bg-secondary" />
-          <div className="h-3 w-1/2 rounded bg-secondary" />
-          <div className="h-3 w-3/4 rounded bg-secondary" />
-        </div>
-      </div>
-    </div>
-  );
-}
+export {
+  SkeletonCard,
+  SkeletonCompactCard,
+  SkeletonPostCard,
+  SkeletonProfileHeader,
+  SkeletonStatsRow,
+  SkeletonBidDetail,
+  SkeletonBrandHeader,
+  SkeletonList,
+  SkeletonPage,
+} from "./Skeletons";
